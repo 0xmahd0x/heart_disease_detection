@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Prediction</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container py-5">
+
+        <!-- Header -->
+
+        <div class="text-center mb-5">
+
+            <h1 class="main-title">
+                Heart Disease Prediction System
+            </h1>
+
+            <p class="subtitle">
+                Machine Learning Project using Flask & SVM
+            </p>
+
+        </div>
+
+        <!-- Best Model -->
+
+        <div class="card custom-card mb-5">
+
+            <div class="card-body text-center">
+
+                <h2>Best Model</h2>
+
+                <h3 class="highlight">
+                    {{ best_model }}
+                </h3>
+
+                <p class="accuracy-text">
+                    Best Accuracy: {{ accuracy }}%
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Prediction Form -->
+
+        <div class="card custom-card mb-5">
+
+            <div class="card-body">
+
+                <h2 class="section-title">
+                    Prediction Form
+                </h2>
+
+                <form action="/predict" method="POST">
+
+                    <div class="row">
+
+                        <!-- Binary Inputs -->
+
+                        {% set binary_features = [
+                        'HighBP',
+                        'HighChol',
+                        'CholCheck',
+                        'Smoker',
+                        'Stroke',
+                        'PhysActivity',
+                        'Fruits',
+                        'Veggies',
+                        'HvyAlcoholConsump',
+                        'AnyHealthcare',
+                        'NoDocbcCost',
+                        'DiffWalk'
+                        ] %}
+
+                        {% for feature in binary_features %}
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>{{ feature }}</label>
+
+                            <select class="form-select" name="{{ feature }}" required>
+
+                                <option value="0">No</option>
+
+                                <option value="1">Yes</option>
+
+                            </select>
+
+                        </div>
+
+                        {% endfor %}
+
+                        <!-- Numeric Inputs -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>BMI</label>
+
+                            <input type="number" step="0.1"
+                                   class="form-control"
+                                   name="BMI"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Diabetes</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="Diabetes"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>General Health</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="GenHlth"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Mental Health</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="MentHlth"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Physical Health</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="PhysHlth"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Sex</label>
+
+                            <select class="form-select"
+                                    name="Sex"
+                                    required>
+
+                                <option value="0">Female</option>
+
+                                <option value="1">Male</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Age</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="Age"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Education</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="Education"
+                                   required>
+
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Income</label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   name="Income"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+
+                        <button type="submit"
+                                class="btn predict-btn">
+
+                            Predict
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- Prediction Result -->
+
+        {% if prediction_text %}
+
+        <div class="card result-card border-{{ result_class }} mb-5">
+
+            <div class="card-body text-center">
+
+                <h2 class="text-{{ result_class }}">
+                    {{ prediction_text }}
+                </h2>
+
+                {% if confidence %}
+
+                <h4>
+                    Confidence: {{ confidence }}%
+                </h4>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        <!-- Models Comparison -->
+
+        <div class="card custom-card mb-5">
+
+            <div class="card-body">
+
+                <h2 class="section-title">
+                    Models Comparison
+                </h2>
+
+                {% for table in tables %}
+
+                    {{ table|safe }}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<!-- =========================
+     Plots Section
+========================= -->
+
+<div class="card custom-card mb-5">
+
+    <div class="card-body">
+
+        <h2 class="section-title">
+            Visualizations & Analysis
+        </h2>
+
+        <div class="row">
+
+            <!-- Plot 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/models_accuracy.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Models Accuracy
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/correlation_heatmap.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Correlation Heatmap
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 3 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/target_distribution.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Target Distribution
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 4 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/smote_comparison.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        SMOTE Comparison
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 5 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/logistic_cm.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Logistic Regression CM
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 6 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/tree_cm.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Decision Tree CM
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 7 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/svm_cm.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        SVM Confusion Matrix
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 8 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/nn_cm.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Neural Network CM
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 9 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/nn_accuracy.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Neural Network Accuracy
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Plot 10 -->
+            <div class="col-md-6 mb-4">
+                <div class="plot-card">
+
+                    <img src="{{ url_for('static', filename='plots/nn_loss.png') }}"
+                         class="img-fluid plot-img">
+
+                    <p class="plot-title">
+                        Neural Network Loss
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

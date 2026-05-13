@@ -1,0 +1,352 @@
+body{
+
+    background: linear-gradient(
+        135deg,
+        #020617,
+        #0f172a,
+        #111827
+    );
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    min-height: 100vh;
+}
+
+html{
+
+    scroll-behavior: smooth;
+}
+
+.container{
+
+    width: 90%;
+
+    margin: auto;
+
+    padding-top: 40px;
+
+    padding-bottom: 40px;
+}
+
+.main-title{
+
+    text-align: center;
+
+    font-size: 70px;
+
+    font-weight: bold;
+
+    color: #38bdf8;
+
+    margin-bottom: 10px;
+}
+
+.subtitle{
+
+    text-align: center;
+
+    font-size: 30px;
+
+    margin-bottom: 40px;
+
+    color: #cbd5e1;
+}
+
+.custom-card{
+
+    background: rgba(30, 41, 59, 0.95);
+
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255,255,255,0.05);
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    margin-bottom: 40px;
+
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+
+    transition: 0.3s;
+}
+
+.custom-card:hover{
+
+    transform: translateY(-5px);
+}
+
+.section-title{
+
+    text-align: center;
+
+    font-size: 50px;
+
+    margin-bottom: 40px;
+
+    color: #38bdf8;
+}
+
+.best-model{
+
+    text-align: center;
+
+    font-size: 60px;
+
+    font-weight: bold;
+
+    color: #22c55e;
+}
+
+.best-accuracy{
+
+    text-align: center;
+
+    font-size: 35px;
+
+    color: gold;
+}
+
+.form-grid{
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+label{
+
+    color: #f1f5f9;
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+
+    display: block;
+}
+
+input,
+select{
+
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: #334155;
+
+    color: white;
+
+    font-size: 16px;
+}
+
+input:focus,
+select:focus{
+
+    outline: none;
+
+    box-shadow: 0 0 10px #38bdf8;
+}
+
+.predict-btn{
+
+    background: linear-gradient(
+        135deg,
+        #38bdf8,
+        #0ea5e9
+    );
+
+    color: white;
+
+    padding: 15px 50px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+
+    display: block;
+
+    margin: 40px auto 0 auto;
+}
+
+.predict-btn:hover{
+
+    transform: scale(1.05);
+
+    box-shadow: 0 0 20px rgba(56,189,248,0.5);
+}
+
+.result-card{
+
+    background: #1e293b;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    animation: fadeIn 0.5s ease;
+}
+
+.result-positive{
+
+    color: #22c55e;
+
+    font-size: 45px;
+
+    font-weight: bold;
+}
+
+.result-negative{
+
+    color: #ef4444;
+
+    font-size: 45px;
+
+    font-weight: bold;
+}
+
+.confidence{
+
+    font-size: 30px;
+
+    color: #facc15;
+}
+
+.table{
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+}
+
+.table th,
+.table td{
+
+    border: 1px solid #475569;
+
+    padding: 15px;
+
+    text-align: center;
+}
+
+.table th{
+
+    background: #1e293b;
+
+    color: #38bdf8;
+}
+
+.table td{
+
+    background: #111827;
+}
+
+/* =========================
+   Plots
+========================= */
+
+.plot-card{
+
+    background: #0f172a;
+
+    border-radius: 20px;
+
+    padding: 15px;
+
+    transition: 0.3s;
+
+    text-align: center;
+
+    height: 100%;
+}
+
+.plot-card:hover{
+
+    transform: scale(1.02);
+
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+}
+
+.plot-img{
+
+    width: 100%;
+
+    border-radius: 15px;
+}
+
+.plot-title{
+
+    margin-top: 15px;
+
+    color: #38bdf8;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+/* =========================
+   Animation
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to{
+
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width: 992px){
+
+    .form-grid{
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 768px){
+
+    .form-grid{
+
+        grid-template-columns: 1fr;
+    }
+
+    .main-title{
+
+        font-size: 45px;
+    }
+
+    .section-title{
+
+        font-size: 35px;
+    }
+}
